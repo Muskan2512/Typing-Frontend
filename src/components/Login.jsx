@@ -18,8 +18,8 @@ export default function Login({setToken}) {
       password,
     });
 
-    console.log(webmail,password);
-    console.log(res);
+    // console.log(webmail,password);
+    // console.log(res);
 
     // check what backend sends
     // if (res.data.message === "Invalid email or password") {

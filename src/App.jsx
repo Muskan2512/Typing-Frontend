@@ -22,7 +22,7 @@ const navigate=useNavigate();
 
   useEffect(() => {
   if(final){
-    console.log("Final is true, navigating to /final");
+    // console.log("Final is true, navigating to /final");
     navigate("/final");
   }
 }, [final]);

@@ -10,7 +10,7 @@ export default function Signup({setToken}) {
   const handleSignup=async(e)=>{
     e.preventDefault();
     try{
-      console.log(e.target);
+      // console.log(e.target);
       const email=e.target.email.value;
       const webmail=e.target.webmail.value;
       const password=e.target.password.value;
