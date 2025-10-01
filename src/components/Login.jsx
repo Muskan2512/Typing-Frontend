@@ -1,14 +1,25 @@
 import { Link, useNavigate } from "react-router-dom"
 import axios from "axios";
 import toast from "react-hot-toast";
+import { ClipLoader } from "react-spinners";
 const endpoint = import.meta.env.VITE_API_ENDPOINT;
+import { useState } from "react";
+
+const Loader = () => (
+  <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <ClipLoader color="#0000aa" size={70} />
+  </div>
+);
 
 export default function Login({setToken}) {
 
   const navigate=useNavigate();
+  const [loading,setLoading]=useState(false);
 
   const handleLogin = async (e) => {
   e.preventDefault();
+  setLoading(true);
+  // setIsSubmitting(true);
   try {
     const webmail = e.target.webmail.value;
     const password = e.target.password.value;
@@ -29,11 +40,13 @@ export default function Login({setToken}) {
 
     if (res.status !== 200) {
       toast.error(res.data.message||"Some error occurred");
+      setLoading(false);
       return;
     }
 
     if(res.data.user.scores.length>0){
       toast.error("You had already taken the test");
+      setLoading(false);
       return;
     }
 
@@ -41,7 +54,7 @@ export default function Login({setToken}) {
     localStorage.setItem("token", res.data.token);
     localStorage.setItem("webmail", webmail);
     setToken(res.data.token);
-    navigate("/typing");
+    navigate("/tests");
   } catch (err) {
      if (err.response) {
       // Error response from backend (like 401, 400, etc.)
@@ -53,12 +66,15 @@ export default function Login({setToken}) {
       // Some other error
       toast.error("Something went wrong");
     }
+  }finally{
+    setLoading(false);
   }
 };
 
 
   return (
     <>
+    {loading ? <Loader /> :
       <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 ">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         
@@ -97,7 +113,6 @@ export default function Login({setToken}) {
                   name="password"
                   type="password"
                   required
-                  autoComplete="current-password"
                   placeholder="Enter password"
                   className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
                 />
@@ -114,16 +129,17 @@ export default function Login({setToken}) {
               </button>
             </div>
           </form>
-
           <p className="mt-10 text-center text-sm/6 text-gray-400">
             Does not have account?{' '}
             <Link to={"/signup"} className="font-semibold text-indigo-400 hover:text-indigo-300">
               Sign up now
             </Link>
           </p>
-         
+          
         </div>
       </div>
+    }
     </>
   )
 }
+

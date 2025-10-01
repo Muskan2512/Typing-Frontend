@@ -10,6 +10,8 @@ import PrivateRoute from './components/PrivateRoute'
 import toast from 'react-hot-toast'
 import NotFound from './components/NotFound'
 import './App.css'
+import Tests from "./components/Tests"
+import SampleTest from './components/SampleTest'
 import { useNavigate } from 'react-router-dom'
 
 const App = () => {
@@ -46,11 +48,20 @@ const navigate=useNavigate();
     <Routes>
       <Route path='/' element={<Login setToken={setToken}/>}/>
       <Route path='/signup' element={<Signup setToken={setToken}/>}/>
+      <Route path='/tests' element={<Tests />}/>
       <Route 
         path='/typing' 
         element={
           <PrivateRoute>
             <Typing2 loggedInUser={loggedInUser} final={final} setFinal={setFinal}/>
+          </PrivateRoute>
+        } 
+      />
+      <Route 
+        path='/sample-typing' 
+        element={
+          <PrivateRoute>
+            <SampleTest loggedInUser={loggedInUser} />
           </PrivateRoute>
         } 
       />

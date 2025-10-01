@@ -46,47 +46,89 @@ function Typing2({ final, setFinal }) {
     }
   };
 
-  const handleChange = (e) => {
-    const val = e.target.value;
-    setInput(val);
+  // const handleChange1 = (e) => {
+  //   const val = e.target.value;
+  //   setInput(val);
 
-    if (!startTime && val.length > 0) {
-      setStartTime(new Date());
-    }
+  //   if (!startTime && val.length > 0) {
+  //     setStartTime(new Date());
+  //   }
 
-    const inputWords = val.trim().split(/\s+/);
-    const textWords = text.trim().split(/\s+/);
+  //   const inputWords = val.trim().split(/\s+/);
+  //   const textWords = text.trim().split(/\s+/);
 
-    // word checkpoint check
-    if (
-      inputWords.length > 0 &&
-      inputWords.length % checkpointInterval === 0 &&
-      val.endsWith(" ")
-    ) {
-      const correctSoFar = textWords.slice(0, inputWords.length).join(" ");
-      if (val.trim() !== correctSoFar) {
-        // toast.error(
-        //   `Mistake at word-checkpoint ${inputWords.length / checkpointInterval}`
-        // );
-        const rollbackValue =
-          textWords.slice(0, inputWords.length - checkpointInterval).join(" ") +
-          " ";
-        setInput(rollbackValue);
-        return;
-      } else {
-        // toast.success(
-        //   `Checkpoint ${inputWords.length / checkpointInterval} cleared ✅`
-        // );
-      }
-    }
+  //   // word checkpoint check
+  //   if (
+  //     inputWords.length > 0 &&
+  //     inputWords.length % checkpointInterval === 0 &&
+  //     val.endsWith(" ")
+  //   ) {
+  //     const correctSoFar = textWords.slice(0, inputWords.length).join(" ");
+  //     if (val.trim() !== correctSoFar) {
+  //       // toast.error(
+  //       //   `Mistake at word-checkpoint ${inputWords.length / checkpointInterval}`
+  //       // );
+  //       const rollbackValue =
+  //         textWords.slice(0, inputWords.length - checkpointInterval).join(" ") +
+  //         " ";
+  //       setInput(rollbackValue);
+  //       return;
+  //     } else {
+  //       // toast.success(
+  //       //   `Checkpoint ${inputWords.length / checkpointInterval} cleared ✅`
+  //       // );
+  //     }
+  //   }
 
-    if (val.trim() === text.trim()) {
-      const end = new Date();
-      setEndTime(end);
-      calculateResult(startTime, end);
-      setFinal(true);
-    }
-  };
+  //   if (val.trim() === text.trim()) {
+  //     const end = new Date();
+  //     setEndTime(end);
+  //     calculateResult(startTime, end);
+  //     setFinal(true);
+  //   }
+  // };
+
+
+const handleChange = (e) => {
+  const val = e.target.value;
+  const textWords = text.trim().split(/\s+/);
+  const inputWords = val.trim().split(/\s+/);
+
+  // Start the timer
+  if (!startTime && val.length > 0) {
+    setStartTime(new Date());
+  }
+
+  // Determine current checkpoint
+  const checkpointIndex =
+    Math.floor(inputWords.length / checkpointInterval) * checkpointInterval;
+
+  // Get the correct text up to this checkpoint
+  const correctUpToCheckpoint = textWords
+    .slice(0, checkpointIndex)
+    .join(" ") + (checkpointIndex > 0 ? " " : "");
+
+  // If user typed beyond the last checkpoint, check correctness
+  if (!text.startsWith(val)) {
+    // rollback to previous checkpoint
+    setInput(correctUpToCheckpoint);
+    // optional: show error toast
+    // toast.error(`Mistake! Back to checkpoint ${checkpointIndex / checkpointInterval}`);
+    return;
+  }
+
+  // Update input if correct
+  setInput(val);
+
+  // Check if typing is complete
+  if (val.trim() === text.trim()) {
+    const end = new Date();
+    setEndTime(end);
+    calculateResult(startTime, end);
+    setFinal(true);
+  }
+};
+
 
   const calculateResult = async (start, end) => {
     const timeTaken = (end - start) / 1000;
@@ -183,7 +225,7 @@ const getHighlightedText = () => {
         <span
           key={`checkpoint-${wordIdx}`}
           className="text-gray-400 font-semibold"
-        >|</span>
+        >🚩</span>
       );
     }
   });
@@ -219,7 +261,7 @@ const getHighlightedText = () => {
       className="select-none"
     >
       <h1 className="text-blue-500  md:mt-2 text-[30px] mx-auto text-center font-bold">
-        Typing Speed Tester
+        TypEclipse
       </h1>
       <div className="mx-auto mt-5 w-3/4 shadow-lg p-3 rounded-lg bg-white justify-center ">
         <div

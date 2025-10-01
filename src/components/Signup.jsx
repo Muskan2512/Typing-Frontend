@@ -2,13 +2,25 @@ import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom"
 import axios from "axios";
+import { useState } from "react";
+import { ClipLoader } from "react-spinners";
 const endpoint = import.meta.env.VITE_API_ENDPOINT;
+
+
+const Loader = () => (
+  <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <ClipLoader color="#0000aa" size={70} />
+  </div>
+);
 
 export default function Signup({setToken}) {
 
   const navigate=useNavigate();
+  const [loading, setLoading] = useState(false);
+
   const handleSignup=async(e)=>{
     e.preventDefault();
+    setLoading(true); // start loader
     try{
       // console.log(e.target);
       const email=e.target.email.value;
@@ -19,10 +31,12 @@ export default function Signup({setToken}) {
   
       if(res.data=="User with this email already exists"){
         toast.error("User with this email already exists");
+        setLoading(false); 
         return;
       }
       if(res.status!==201){
         toast.error(res.data.message || "Some error occurred");
+        setLoading(false); 
         return;
       }
       else{
@@ -30,13 +44,23 @@ export default function Signup({setToken}) {
         navigate("/");
       }
     }catch(err){
+       if (err.response) {
+      // Error response from backend (like 401, 400, etc.)
+      toast.error(err.response.data.message || "Invalid webmail or password");
+    } else if (err.request) {
+      // No response from backend
+      toast.error("No response from server. Please try again.");
+    } else {
+      // Some other error
       toast.error("Something went wrong");
-      console.error(err); 
+    }
+  }finally{
+    setLoading(false); 
   }
   }
   return (
     <>
-      <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+    {loading ? <Loader /> : <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         
           <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-blue-500">Create a new account</h2>
@@ -53,6 +77,7 @@ export default function Signup({setToken}) {
                   id="email"
                   name="email"
                   type="email"
+                  // onChange={()=>{setIsSubmitting(false)}}
                   required
                  placeholder="Enter email address"
                   className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-black/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
@@ -70,6 +95,7 @@ export default function Signup({setToken}) {
                   type="email"
                   required
                   placeholder="Enter NITT webmail"
+                  // onChange={()=>{setIsSubmitting(false)}}
                   className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-black/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
                 />
               </div>
@@ -89,6 +115,7 @@ export default function Signup({setToken}) {
                   type="password"
                   required
                   placeholder="Enter password"
+                  // onChange={()=>{setIsSubmitting(false)}}
                   className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-black/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
                 />
               </div>
@@ -98,6 +125,7 @@ export default function Signup({setToken}) {
               <button
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+
               >
                 Create Account
               </button>
@@ -110,9 +138,11 @@ export default function Signup({setToken}) {
               Sign in
             </Link>
           </p>
+          
          
         </div>
-      </div>
+      </div>}
+     
     </>
   )
 }
