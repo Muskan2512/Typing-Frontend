@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from "react-hot-toast"
 
+const FinalTestPassword = import .meta.env.VITE_FINAL_TEST_PASSWORD || "INFOTREK@25";
+
 const Cards = ({testType,content}) => {
   const [modal,setModal]=useState(false);
   const [password,setPassword]=useState("");
@@ -12,7 +14,7 @@ const Cards = ({testType,content}) => {
     if(testType=="Sample Test" && password=="password"){
       setPassword("");
       navigate("/sample-typing");
-    }else if(testType=="Test" && password=="infotrek-2025"){
+    }else if(testType=="Test" && password==FinalTestPassword){
       setPassword("");
       navigate("/typing");
     }else{

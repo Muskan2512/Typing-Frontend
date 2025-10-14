@@ -5,7 +5,7 @@ import Final from "./Final";
 import { Link } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 
-const sentences = ["Lorem Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus, obcaecati! repellat magni laboriosam dicta optio."];
+const sentences = ["Welcome to the event, Accuracy matters the most. Try not to make mistakes."];
 
 
 const FinalPage = () => (
