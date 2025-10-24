@@ -14,7 +14,7 @@ const Cards = ({testType,content}) => {
     if(testType=="Sample Test" && password=="password"){
       setPassword("");
       navigate("/sample-typing");
-    }else if(testType=="Test" && password==FinalTestPassword){
+    }else if(testType=="INFOTREK'25" && password==FinalTestPassword){
       setPassword("");
       navigate("/typing");
     }else{
