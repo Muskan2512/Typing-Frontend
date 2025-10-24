@@ -188,11 +188,11 @@ function Typing2({ final, setFinal }) {
       onPaste={disableEvents}
       className="select-none"
     >
-      <h1 className="text-indigo-400 text-[2.2rem] font-extrabold text-center tracking-wide drop-shadow-md">
+      <h1 className="text-indigo-400 text-[2.6rem] font-extrabold text-center tracking-wide drop-shadow-md">
         TypEclipse
       </h1>
 
-      <div className="mx-auto mt-5 w-3/4 shadow-lg p-3 rounded-lg bg-white justify-center ">
+      <div className="mx-auto text-2xl mt-5 w-[80%] shadow-lg p-3 rounded-lg bg-white justify-center ">
         <div
           ref={textContainerRef}
           className="flex flex-col 
