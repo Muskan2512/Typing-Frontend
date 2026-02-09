@@ -114,9 +114,9 @@ function Typing2({ final, setFinal }) {
     let charIndex = 0; // to map typed input position
     const spans = [];
 
-    words.forEach((word, wordIdx) => {
+    words?.forEach((word, wordIdx) => {
       // render each character of this word
-      word.split("").forEach((char) => {
+      word.split("")?.forEach((char) => {
         const typedChar = input[charIndex];
         const className =
           typedChar === undefined
