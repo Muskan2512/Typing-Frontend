@@ -47,8 +47,8 @@ function Typing2({ final, setFinal }) {
 
   const handleChange = (e) => {
     const val = e.target.value;
-    const textWords = text.trim().split(/\s+/);
-    const inputWords = val.trim().split(/\s+/);
+    const textWords = text?.trim().split(/\s+/);
+    const inputWords = val?.trim().split(/\s+/);
 
     // Start the timer
     if (!startTime && val.length > 0) {
@@ -77,7 +77,7 @@ function Typing2({ final, setFinal }) {
     setInput(val);
 
     // Check if typing is complete
-    if (val.trim() === text.trim()) {
+    if (val?.trim() === text?.trim()) {
       const end = new Date();
       setEndTime(end);
       calculateResult(startTime, end);
@@ -87,7 +87,7 @@ function Typing2({ final, setFinal }) {
 
   const calculateResult = async (start, end) => {
     const timeTaken = (end - start) / 1000;
-    const words = text.trim().split(/\s+/).length;
+    const words = text?.trim().split(/\s+/).length;
     const speed = Math.round((words / timeTaken) * 60);
     const correctChars = input
       .split("")
@@ -110,7 +110,7 @@ function Typing2({ final, setFinal }) {
 
   // Highlight + scroll logic with checkpoints
   const getHighlightedText = () => {
-    const words = text.trim().split(/\s+/); // split by words
+    const words = text?.trim().split(/\s+/); // split by words
     let charIndex = 0; // to map typed input position
     const spans = [];
 
